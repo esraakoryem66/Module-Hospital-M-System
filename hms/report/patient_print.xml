@@ -1,0 +1,143 @@
+<odoo>
+    <record id="patient_print" model="ir.actions.report">
+        <field name="name">Patient Status Report</field>
+        <field name="model">hms.patient</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hms.patient_print_template</field>
+        <field name="report_file">hms.patient_print_template</field>
+        <field name="print_report_name">'Patient Status Report - %s' % (object.first_name + ' ' + object.last_name)</field>
+        <field name="binding_model_id" ref="hms.model_hms_patient"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="patient_print_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="patient">
+                <t t-call="web.external_layout">
+                    <style>
+                        .body {
+                            font-family: Arial, sans-serif;
+                            margin: 0;
+                            padding: 0;
+                            background-color: #f4f4f4;
+                        }
+
+                        .container {
+                            inline-size: 70%;
+                            margin: 30px auto;
+                            background-color: white;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                            padding: 20px;
+                            border: 1px solid #ccc;
+                        }
+
+                        .header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                        }
+
+                        h1 {
+                            color: red;
+                            margin: 0;
+                        }
+
+                        .patient-image {
+                            width: 100px;
+                            height: 100px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                        }
+
+                        .patient-info {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-top: 20px;
+                        }
+
+                        .info-left, .info-right {
+                            width: 45%;
+                        }
+
+                        p {
+                            margin: 8px 0;
+                        }
+
+                        .log-history {
+                            margin-top: 30px;
+                        }
+
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 10px;
+                        }
+
+                        table, th, td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                        }
+
+                        th {
+                            background-color: #f2f2f2;
+                        }
+
+                        td {
+                            text-align: center;
+                        }
+                    </style>
+                    <div class="container">
+                        <div class="header">
+                            <h1>Patient Status Report</h1>
+                            <img t-if="patient.image" class="patient-image"
+                                t-att-src="image_data_uri(patient.image)" alt="Patient Image"/>
+                        </div>
+
+                        <div class="patient-info">
+                            <div class="info-left">
+                                <p><strong>Name:</strong> <t t-esc="patient.first_name"/> <t t-esc="patient.last_name"/></p>
+                                <p><strong>Age:</strong> <t t-esc="patient.age"/></p>
+                                <p><strong>Department:</strong> <t t-esc="patient.department_id.name"/></p>
+                                <p><strong>Doctors:</strong>
+                                    <t t-foreach="patient.doctor_ids" t-as="doctor">
+                                        <t t-esc="doctor.first_name"/>
+                                        <!-- <t t-if="not loop.last">, </t> -->
+                                    </t>
+                                </p>
+                            </div>
+                            <div class="info-right">
+                                <p><strong>Birth Date:</strong> <t t-esc="patient.birth_date"/></p>
+                                <p><strong>PCR:</strong> <t t-esc="patient.pcr"/></p>
+                                <p><strong>Blood Type:</strong> <t t-esc="patient.blood_type"/></p>
+                                <p><strong>Email:</strong> <t t-esc="patient.email"/></p>
+                            </div>
+                        </div>
+
+                        <div class="log-history">
+                            <h2>Log History</h2>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Date</th>
+                                        <th>Info</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="patient.log_ids" t-as="log">
+                                        <tr>
+                                            <td><t t-esc="log.created_by"/></td>
+                                            <td><t t-esc="log.date"/></td>
+                                            <td><t t-esc="log.description"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

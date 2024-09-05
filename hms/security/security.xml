@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <!-- مجموعة المستخدمين -->
+        <!-- <record id="group_hms_user" model="res.groups">
+            <field name="name">HMS User</field>
+            <field name="category_id" ref="base.module_category_hms"/>
+        </record> -->
+
+        <!-- مجموعة المديرين -->
+        <record id="group_hms_manager" model="res.groups">
+            <field name="name">HMS Manager</field>
+            <!-- <field name="category_id" ref="base.module_category_hms"/> -->
+        </record>
+    </data>
+</odoo>

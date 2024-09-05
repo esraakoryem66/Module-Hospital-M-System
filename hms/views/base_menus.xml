@@ -1,0 +1,13 @@
+<odoo>
+<!--    <data noupdate="1">-->
+        <menuitem id="menu_hospital"
+                  name="Hospital M System"
+        />
+
+        <menuitem id="menu_root_system"
+                  name="System Components"
+                  parent="menu_hospital"
+        />
+
+<!--    </data>-->
+</odoo>

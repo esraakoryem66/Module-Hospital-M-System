@@ -1,0 +1,99 @@
+<odoo>
+    <record id="patient_tree_view" model="ir.ui.view">
+        <field name="name">patient.tree.view</field>
+        <field name="model">hms.patient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="age"/>
+                <field name="blood_type"/>
+                <field name="cr_ratio" attrs="{'required': [('pcr', '=', True)]}"/>
+                <field name="pcr"/>
+                <field name="doctor_ids" groups="hms.group_hms_manager"/>
+                <field name="state"/>
+                <!-- <field name="state" widget="badge"
+                       decoration-danger="state == 'published'"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'confirm'"/> -->
+            </tree>
+        </field>
+    </record>
+
+    <record id="patient_form_view" model="ir.ui.view">
+        <field name="name">patient.form.view</field>
+        <field name="model">hms.patient</field>
+        <field name="arch" type="xml">
+          <form>
+                 <!-- <header>
+                    <button name="action_draft" type="object" class="btn-secondary" string="Draft"
+                            invisible="state != 'published'"/>
+                    <button name="action_confirm" type="object" class="btn-primary" string="Confirm"
+                            invisible="state != 'draft'"/>
+                    <button name="action_published" type="object" class="btn-success" string="Published"
+                            invisible="state != 'confirm'"/>
+                    <field name="state" widget="statusbar" />
+                </header> -->
+                <sheet>
+                    <group>
+                        <group string="General Info.">
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="birth_date"/>
+                            <field name="age"/>
+                            <field name="image" widget="image" options='{"size": [100, 100]}' class="bg-view"/>
+                            <field name="address"/>
+                            <field name="email"/>
+                            <field name="department_id"/>
+                            <field name="department_capacity" readonly="1"/>
+                        </group>
+                        <group string="Medical Info.">
+                            <field name="history" attrs="{'invisible': [('age', '&lt;', 50)]}"/>                            <field name="cr_ratio"/>
+                            <field name="blood_type"/>
+                            <field name="pcr"/>
+                            <field name="cr_ratio" attrs="{'required': [('pcr', '=', True)]}"/>
+                            <field name="state"/>
+                            <field name="doctor_ids" attrs="{'readonly': [('department_id', '=', False)]}" />
+                        </group>
+                    </group>
+                </sheet>
+                <notebook>
+                    <page string="Log History">
+                        <field name="log_ids">
+                            <tree string="Log History">
+                                <field name="date"/>
+                                <field name="created_by"/>
+                                <field name="description"/>
+                            </tree>
+                        </field>
+                    </page>
+               </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="patient_search_view" model="ir.ui.view">
+        <field name="name">patient.search.view</field>
+        <field name="model">hms.patient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="first_name"/>
+                <field name="age"/>
+
+                <filter name="blood_type" string="Blood_type" context="{'group_by': 'blood_type'}"/>
+                <filter name="department_id" string="Department" context="{'group_by': 'department_id'}"/>
+            </search>
+        </field>
+    </record>
+
+     <record id="hospital_management_action" model="ir.actions.act_window">
+        <field name="name">All Patients</field>
+        <field name="res_model">hms.patient</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menuitem_hospital_management"
+              name="Patients"
+              parent="menu_root_system"
+              action="hospital_management_action"/>
+</odoo>

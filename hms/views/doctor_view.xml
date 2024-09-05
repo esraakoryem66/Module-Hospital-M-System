@@ -1,0 +1,59 @@
+<odoo>
+    <record id="doctor_tree_view" model="ir.ui.view">
+        <field name="name">doctor.tree.view</field>
+        <field name="model">hms.doctor</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="image"/>
+                <field name="patient_ids"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="doctor_form_view" model="ir.ui.view">
+        <field name="name">doctor.form.view</field>
+        <field name="model">hms.doctor</field>
+        <field name="arch" type="xml">
+          <form>
+                <sheet>
+                    <group>
+                        <group string="General Info.">
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="image" widget="image" options='{"size": [100, 100]}' class="bg-view"/>
+                        </group>
+                        <field name="patient_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="doctor_search_view" model="ir.ui.view">
+        <field name="name">doctor.search.view</field>
+        <field name="model">hms.doctor</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="first_name"/>
+
+                <!-- <filter name="blood_type" string="Blood_type" context="{'group_by': 'blood_type'}"/>
+                <filter name="department_id" string="Department" context="{'group_by': 'department_id'}"/> -->
+            </search>
+        </field>
+    </record>
+
+     <record id="hospital_management3_action" model="ir.actions.act_window">
+        <field name="name">All Doctors</field>
+        <field name="res_model">hms.doctor</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menuitem_hospital_management3"
+              name="Doctors"
+              parent="menu_root_system"
+              action="hospital_management3_action"
+              groups="hms.group_hms_manager"
+              />
+</odoo>

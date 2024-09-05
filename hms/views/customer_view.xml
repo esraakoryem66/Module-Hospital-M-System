@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <!-- Inherit the form view of res.partner -->
+        <record id="view_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <!-- Locate the group inside Sales and Purchase tab and the Misc group -->
+                <xpath expr="//page[@name='sales_purchases']/group/group[@name='misc']" position="inside">
+                    <field name="related_patient_id"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Inherit the tree view of res.partner to add website field -->
+        <record id="view_partner_tree_inherit" model="ir.ui.view">
+            <field name="name">res.partner.tree.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="website" string="Website"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
